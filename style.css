@@ -19,6 +19,7 @@
   --ink:#14232A; --muted:#4B5D63;
   /* ---- 固定色（不隨主題色變）：紅字承諾、搜尋標示 ---- */
   --red:#D0021B; --red-glow:rgba(208,2,27,.18);
+  --m-red:var(--red);   /* 跑馬燈用紅色＝承諾紅 */
   --mark-bg:#FFD86B; --mark-ink:#14232A; --mark-line:#E09A00;
   --doc-hl:#FFF27A; --doc-hl-ink:#14232A;
   /* 英文、數字用 Arial；中文自動改用標楷體（Arial 無中文字形） */
@@ -74,8 +75,18 @@ mark.hl-doc{background:var(--doc-hl);color:var(--doc-hl-ink);box-shadow:none}
 ::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:var(--edge);border-radius:6px}::-webkit-scrollbar-track{background:transparent}
 
 /* 頂部 */
-.top{position:sticky;top:0;z-index:5;background:var(--panel);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--edge)}
-.top::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--edge);opacity:1}
+.top{position:sticky;top:0;z-index:5;background:var(--panel);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+/* ===== 導覽列底部跑馬燈光線 =====
+   sticky 本身即可作為偽元素定位基準，不需改為 relative（改了會失去捲動固定效果） */
+.top::before,.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;pointer-events:none}
+.top::before{background:linear-gradient(90deg,var(--m-blue),var(--m-violet),var(--m-red))}
+.top::after{background:linear-gradient(90deg,transparent 0%,transparent 40%,rgba(255,255,255,.8) 50%,transparent 60%,transparent 100%);
+  background-size:300% 100%;background-repeat:no-repeat;background-position:160% 0;animation:topSweep 5s ease-in-out infinite}
+@keyframes topSweep{from{background-position:160% 0}to{background-position:-60% 0}}  /* 160%→-60%：光點由左往右 */
+body.s-nomarquee .top::before,body.s-nomarquee .top::after{display:none}
+body.s-nomarquee .top{border-bottom:1px solid var(--edge)}
+@media (prefers-reduced-motion:reduce){.top::after{animation:none;display:none}}
+@media print{.top::before,.top::after{display:none}}
 .top-in{max-width:1320px;margin:0 auto;padding:14px 22px 14px;display:grid;grid-template-columns:1fr;gap:8px}
 .title{font-size:13px;color:var(--muted);line-height:1.4}
 .title strong{font-size:20px;font-weight:700;color:var(--ink);margin-right:12px;letter-spacing:.06em;color:var(--cyan2)}
