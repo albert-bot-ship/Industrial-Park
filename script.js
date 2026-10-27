@@ -540,7 +540,7 @@ window.addEventListener('scroll',()=>{$('totop').hidden=!SET.totop||window.scrol
 $('totop').addEventListener('click',()=>window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}));
 // ---- 設定 ----
 const SETK='hongda-settings';
-const SDEF={mode:'light',density:'cozy',side:'show',redsum:false,slimhead:true,twocol:true,overview:true,minimap:true,totop:true,printlist:true};
+const SDEF={mode:'light',density:'cozy',side:'show',redsum:false,slimhead:true,twocol:true,overview:true,minimap:true,totop:true,printlist:true,marquee:true};
 let SET=Object.assign({},SDEF);
 try{Object.assign(SET,JSON.parse(localStorage.getItem(SETK)||'{}'))}catch(e){}
 if(!JSON.stringify(SET).includes('"mode"')||!SET.mode){try{SET.mode=localStorage.getItem('hongda-theme')==='dark'?'dark':'light'}catch(e){SET.mode='light'}}
@@ -549,6 +549,7 @@ function applySet(rerun){
   const B=document.body.classList;
   B.toggle('s-compact',SET.density==='compact');B.toggle('s-sidehide',SET.side==='hide');
   ['redsum','slimhead','twocol','minimap','printlist'].forEach(k=>B.toggle('s-'+k,!!SET[k]));
+  B.toggle('s-nomarquee',!SET.marquee);
   document.querySelectorAll('#setPanel input[data-key]').forEach(i=>i.checked=!!SET[i.dataset.key]);
   document.querySelectorAll('#setPanel .seg').forEach(g=>g.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',SET[g.dataset.key]===b.dataset.v)));
   $('totop').hidden=!SET.totop||window.scrollY<600;
