@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>鴻大產業園區 環評承諾檢索</title>
+<link rel="stylesheet" href="style.css">
+<script>try{var t=localStorage.getItem("hongda-theme");if(t&&t!=="teal")document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <div class="title"><div class="setwrap"><button type="button" class="setbtn" id="setBtn" aria-expanded="false" aria-controls="setPanel">⚙ 設定</button>
+    <div class="setpanel" id="setPanel" hidden role="dialog" aria-label="顯示設定">
+      <h4>配色</h4><span class="themes" role="group" aria-label="配色"><button type="button" data-th="teal" title="青綠（原配色）" aria-label="青綠（原配色）" style="background:#00968A"></button><button type="button" data-th="blue" title="公文藍" aria-label="公文藍" style="background:#1F4E79"></button><button type="button" data-th="green" title="環境綠" aria-label="環境綠" style="background:#2E6B3F"></button><button type="button" data-th="gray" title="沉穩灰" aria-label="沉穩灰" style="background:#37474F"></button><button type="button" data-th="brown" title="大地棕" aria-label="大地棕" style="background:#7A5230"></button><button type="button" data-th="dark" title="深色" aria-label="深色" style="background:#1A2427"></button></span>
+      <h4>閱讀密度</h4><div class="seg" data-key="density"><button type="button" data-v="cozy">舒適</button><button type="button" data-v="compact">緊湊</button></div>
+      <div class="set-desk"><h4>側欄（文件導覽）</h4><div class="seg" data-key="side"><button type="button" data-v="show">顯示</button><button type="button" data-v="hide">收合</button></div></div>
+      <h4>顯示方式</h4>
+      <label class="sw-row"><span>紅字摘要模式<small>有紅字的卡片只顯示承諾句，點「看全文」展開</small></span><input type="checkbox" data-key="redsum"></label>
+      <label class="sw-row"><span>精簡卡片標頭<small>隱藏重複的「開啟 PDF」文字，頁碼仍可點</small></span><input type="checkbox" data-key="slimhead"></label>
+      <label class="sw-row"><span>審查卡片兩欄<small>修正處移到卡片底部，答覆說明較寬</small></span><input type="checkbox" data-key="twocol"></label>
+      <label class="sw-row"><span>未搜尋時顯示概況<small>開啟時先看各文件、章節的段數與承諾數</small></span><input type="checkbox" data-key="overview"></label>
+      <label class="sw-row"><span>長段落符合處小地圖<small>卡片右緣標出關鍵字位置，可點選跳到</small></span><input type="checkbox" data-key="minimap"></label>
+      <label class="sw-row"><span>回到頂端按鈕</span><input type="checkbox" data-key="totop"></label>
+      <label class="sw-row"><span>列印時排成清單<small>只印檔案、頁碼與內容，省略按鈕與裝飾</small></span><input type="checkbox" data-key="printlist"></label>
+      <div class="setfoot"><button type="button" id="setReset">還原預設</button><button type="button" class="setclose" id="setClose">完成</button></div>
+    </div></div><strong>鴻大產業園區 環評承諾檢索</strong>第八章、三次審查意見回覆對照表、執行重點說明　全文收錄，紅字為環評具體承諾</div>
+  <div class="sbox">
+    <label for="q" style="position:absolute;left:-9999px">搜尋</label>
+    <input id="q" type="search" placeholder="輸入關鍵字，多個關鍵字以空格分隔，例：石虎 路殺" autocomplete="off">
+    <button id="clear" type="button">清除</button>
+  </div>
+  <div class="hint" id="hint" aria-live="polite"></div>
+</div></header>
+
+<div class="wrap">
+  <aside id="side" aria-label="文件導覽">
+    <h2>文件導覽</h2>
+    <div id="tree" role="tree"></div>
+    <p class="note">審查回覆依第八章章節分層：有「修正處」者依其章節，其餘依關鍵字自動判定，一段可能出現在多個章節下。第八章各節再依「一、施工期間／二、營運期間」標題分層。</p>
+  </aside>
+  <main>
+    <button id="toggleSide" type="button" aria-expanded="false">文件導覽</button>
+    <div class="secbar" id="secbar" hidden><span>正在檢視第八章：<strong id="secname"></strong>（由修正處連結開啟）</span><button type="button" id="secback">返回搜尋結果</button></div>
+    <div class="toolbar">
+      <button type="button" class="sidebtn" id="sideBtn" title="收合／顯示文件導覽" aria-label="收合或顯示文件導覽">☰</button>
+      <nav class="crumb" id="crumb" aria-label="目前位置"></nav>
+      <div class="vtabs" role="group" aria-label="檢視方式"><button type="button" class="vtab" data-v="list" aria-pressed="true">一般檢視</button><button type="button" class="vtab" data-v="cmp" aria-pressed="false">歷次回覆對照</button></div>
+      <label class="opt redsw"><input type="checkbox" id="onlyRed"> 只看紅字</label>
+      <details class="tools">
+        <summary>分類校正</summary>
+        <div class="tools-in">
+          <label class="opt"><input type="checkbox" id="onlyAuto"> 只看自動分類段落<span class="n" id="nAuto"></span></label>
+          <p class="note2">已校正 <strong id="nFixd">0</strong> 段。點卡片上的「✎ 分類」修改，完成後按匯出。</p>
+          <div class="ovbtns"><button type="button" id="exportOv">匯出設定檔</button><button type="button" id="clearOv">清除校正</button></div>
+        </div>
+      </details>
+    </div>
+    <div class="tagrow"><span class="tagrow-l">分類</span><div id="tags"></div><button type="button" id="clearTags">清除</button></div>
+    <details class="pin" id="pin" open hidden></details>
+    <div class="bar"><span class="count" id="count"></span><span class="sub" id="sub"></span></div>
+    <div class="ovw" id="ovw" hidden></div>
+    <ol class="res" id="res"></ol>
+    <div class="cmp" id="cmp" hidden></div>
+    <button class="more" id="more" type="button" hidden></button>
+    <div class="nav" id="nav" hidden>
+      <button type="button" id="prev" aria-label="上一筆" title="上一筆（鍵盤 ↑）">▲</button>
+      <span id="pos" aria-live="polite"></span>
+      <button type="button" id="next" aria-label="下一筆" title="下一筆（鍵盤 ↓）">▼</button>
+    </div>
+    <p class="foot">資料來源：1131005_第1次審查意見回覆對照表、1131203_第2次審查意見回覆對照表、1140106_第3次審查意見回覆對照表、環評承諾第八章重點標示、1150310鴻大產業園區環評承諾執行重點說明（PDF 文字層抽取；執行重點說明第 2、6、7、8 點框選內容原為圖片，依圖轉錄並附原圖）。頁碼為原文件頁尾頁碼；點頁碼可開啟原始 PDF 該頁（5 份 PDF 須以原檔名與網頁放在同一資料夾）。</p>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" hidden></div>
+<button type="button" class="totop" id="totop" hidden>↑ 頂端</button>
+<nav class="mtabs" id="mtabs" aria-label="手機分頁">
+  <button type="button" data-m="search" aria-pressed="true"><span aria-hidden="true">⌕</span>搜尋</button>
+  <button type="button" data-m="nav" aria-pressed="false"><span aria-hidden="true">☰</span>導覽</button>
+  <button type="button" data-m="cmp" aria-pressed="false"><span aria-hidden="true">⇆</span>對照</button>
+  <button type="button" data-m="set" aria-pressed="false"><span aria-hidden="true">⚙</span>設定</button>
+</nav>
+<script src="data.js"></script>
+<script src="overrides.js" onerror="void 0"></script>
+<script src="script.js"></script>
+</body>
+</html>
