@@ -487,14 +487,21 @@ function renderCrumb(){
   $('crumb').innerHTML=parts.map((p,i)=>`<span${i===parts.length-1?' class="last"':''}>${p}</span>`).join('<i>›</i>');
 }
 
-// ---- 配色切換 ----
-function setTheme(t){
-  if(t==='teal')delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme=t;
-  try{localStorage.setItem('hongda-theme',t)}catch(e){}
-  document.querySelectorAll('.themes button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.th===t));
+// ---- 主題色 ----
+const ACCENTS=['blue','green','gold','pink','cyber','coral','lavender','glacier','charcoal','jadegold'];
+function setAccent(a){
+  if(!ACCENTS.includes(a))a='blue';
+  const d=document.documentElement;
+  ACCENTS.forEach(x=>d.classList.remove('accent-'+x));d.classList.add('accent-'+a);
+  try{localStorage.setItem('accent',a)}catch(e){}
+  document.querySelectorAll('.acc').forEach(b=>b.setAttribute('aria-checked',b.dataset.ac===a));
 }
-document.querySelectorAll('.themes button').forEach(b=>b.addEventListener('click',()=>setTheme(b.dataset.th)));
-setTheme(document.documentElement.dataset.theme||'teal');
+document.querySelectorAll('.acc').forEach(b=>b.addEventListener('click',()=>setAccent(b.dataset.ac)));
+setAccent((()=>{try{return localStorage.getItem('accent')}catch(e){return null}})()||'blue');
+// ---- 深淺模式 ----
+const mqDark=matchMedia('(prefers-color-scheme: dark)');
+function applyMode(){document.documentElement.classList.toggle('mode-dark',SET.mode==='dark'||(SET.mode==='auto'&&mqDark.matches))}
+mqDark.addEventListener&&mqDark.addEventListener('change',()=>{if(SET.mode==='auto')applyMode()});
 // ---- 概況 ----
 function renderOverview(){
   const rc=f=>S.filter(s=>(!f||f(s))&&s.red).length, nc=f=>S.filter(f).length;
@@ -533,10 +540,12 @@ window.addEventListener('scroll',()=>{$('totop').hidden=!SET.totop||window.scrol
 $('totop').addEventListener('click',()=>window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}));
 // ---- 設定 ----
 const SETK='hongda-settings';
-const SDEF={density:'cozy',side:'show',redsum:false,slimhead:true,twocol:true,overview:true,minimap:true,totop:true,printlist:true};
+const SDEF={mode:'light',density:'cozy',side:'show',redsum:false,slimhead:true,twocol:true,overview:true,minimap:true,totop:true,printlist:true};
 let SET=Object.assign({},SDEF);
 try{Object.assign(SET,JSON.parse(localStorage.getItem(SETK)||'{}'))}catch(e){}
+if(!JSON.stringify(SET).includes('"mode"')||!SET.mode){try{SET.mode=localStorage.getItem('hongda-theme')==='dark'?'dark':'light'}catch(e){SET.mode='light'}}
 function applySet(rerun){
+  applyMode();
   const B=document.body.classList;
   B.toggle('s-compact',SET.density==='compact');B.toggle('s-sidehide',SET.side==='hide');
   ['redsum','slimhead','twocol','minimap','printlist'].forEach(k=>B.toggle('s-'+k,!!SET[k]));
@@ -551,7 +560,7 @@ document.addEventListener('click',e=>{if(!$('setPanel').hidden&&!e.target.closes
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('setPanel').hidden){$('setPanel').hidden=true;$('setBtn').setAttribute('aria-expanded','false');$('setBtn').focus()}});
 $('setPanel').addEventListener('change',e=>{const k=e.target.dataset.key;if(!k)return;SET[k]=e.target.checked;applySet(true)});
 $('setPanel').addEventListener('click',e=>{const b=e.target.closest('.seg button');if(!b)return;SET[b.closest('.seg').dataset.key]=b.dataset.v;applySet(true)});
-$('setReset').addEventListener('click',()=>{SET=Object.assign({},SDEF);applySet(true);setTheme('teal');flashMsg('已還原預設設定')});
+$('setReset').addEventListener('click',()=>{SET=Object.assign({},SDEF);applySet(true);setAccent('blue');flashMsg('已還原預設設定')});
 $('sideBtn').addEventListener('click',()=>{SET.side=SET.side==='hide'?'show':'hide';applySet(false)});
 applySet(false);
 // ---- 手機版 ----
