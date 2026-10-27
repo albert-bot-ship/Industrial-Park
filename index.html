@@ -5,13 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>鴻大產業園區 環評承諾檢索</title>
 <link rel="stylesheet" href="style.css">
-<script>try{var t=localStorage.getItem("hongda-theme");if(t&&t!=="teal")document.documentElement.dataset.theme=t}catch(e){}</script>
+<script>
+/* 渲染前先套用主題色與深淺模式，避免重整時閃色 */
+(function(){var d=document.documentElement,a="blue",m="light";
+try{a=localStorage.getItem("accent")||"blue";var s=JSON.parse(localStorage.getItem("hongda-settings")||"{}");m=s.mode||(localStorage.getItem("hongda-theme")==="dark"?"dark":"light")}catch(e){}
+if(!/^(blue|green|gold|pink|cyber|coral|lavender|glacier|charcoal|jadegold)$/.test(a))a="blue";
+d.classList.add("accent-"+a);
+if(m==="dark"||(m==="auto"&&window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches))d.classList.add("mode-dark");})();
+</script>
 </head>
 <body>
 <header class="top"><div class="top-in">
   <div class="title"><div class="setwrap"><button type="button" class="setbtn" id="setBtn" aria-expanded="false" aria-controls="setPanel">⚙ 設定</button>
     <div class="setpanel" id="setPanel" hidden role="dialog" aria-label="顯示設定">
-      <h4>配色</h4><span class="themes" role="group" aria-label="配色"><button type="button" data-th="teal" title="青綠（原配色）" aria-label="青綠（原配色）" style="background:#00968A"></button><button type="button" data-th="blue" title="公文藍" aria-label="公文藍" style="background:#1F4E79"></button><button type="button" data-th="green" title="環境綠" aria-label="環境綠" style="background:#2E6B3F"></button><button type="button" data-th="gray" title="沉穩灰" aria-label="沉穩灰" style="background:#37474F"></button><button type="button" data-th="brown" title="大地棕" aria-label="大地棕" style="background:#7A5230"></button><button type="button" data-th="dark" title="深色" aria-label="深色" style="background:#1A2427"></button></span>
+      <h4>模式</h4><div class="seg" data-key="mode"><button type="button" data-v="light">淺色</button><button type="button" data-v="dark">深色</button><button type="button" data-v="auto">跟隨系統</button></div>
+      <h4>主題色</h4><div class="accents" role="radiogroup" aria-label="主題色"><button type="button" class="acc accent-blue" role="radio" aria-checked="false" data-ac="blue"><span class="dot" aria-hidden="true"></span>blue</button><button type="button" class="acc accent-green" role="radio" aria-checked="false" data-ac="green"><span class="dot" aria-hidden="true"></span>green</button><button type="button" class="acc accent-gold" role="radio" aria-checked="false" data-ac="gold"><span class="dot" aria-hidden="true"></span>gold</button><button type="button" class="acc accent-pink" role="radio" aria-checked="false" data-ac="pink"><span class="dot" aria-hidden="true"></span>pink</button><button type="button" class="acc accent-cyber" role="radio" aria-checked="false" data-ac="cyber"><span class="dot" aria-hidden="true"></span>cyber</button><button type="button" class="acc accent-coral" role="radio" aria-checked="false" data-ac="coral"><span class="dot" aria-hidden="true"></span>coral</button><button type="button" class="acc accent-lavender" role="radio" aria-checked="false" data-ac="lavender"><span class="dot" aria-hidden="true"></span>lavender</button><button type="button" class="acc accent-glacier" role="radio" aria-checked="false" data-ac="glacier"><span class="dot" aria-hidden="true"></span>glacier</button><button type="button" class="acc accent-charcoal" role="radio" aria-checked="false" data-ac="charcoal"><span class="dot" aria-hidden="true"></span>charcoal</button><button type="button" class="acc accent-jadegold" role="radio" aria-checked="false" data-ac="jadegold"><span class="dot" aria-hidden="true"></span>jadegold</button></div>
       <h4>閱讀密度</h4><div class="seg" data-key="density"><button type="button" data-v="cozy">舒適</button><button type="button" data-v="compact">緊湊</button></div>
       <div class="set-desk"><h4>側欄（文件導覽）</h4><div class="seg" data-key="side"><button type="button" data-v="show">顯示</button><button type="button" data-v="hide">收合</button></div></div>
       <h4>顯示方式</h4>
@@ -26,7 +34,7 @@
     </div></div><strong>鴻大產業園區 環評承諾檢索</strong>第八章、三次審查意見回覆對照表、執行重點說明　全文收錄，紅字為環評具體承諾</div>
   <div class="sbox">
     <label for="q" style="position:absolute;left:-9999px">搜尋</label>
-    <input id="q" type="search" placeholder="輸入關鍵字，多個關鍵字以空格分隔，例：石虎 路殺" autocomplete="off">
+    <span class="qicon" aria-hidden="true"></span><input id="q" type="search" placeholder="輸入關鍵字，多個關鍵字以空格分隔，例：石虎 路殺" autocomplete="off">
     <button id="clear" type="button">清除</button>
   </div>
   <div class="hint" id="hint" aria-live="polite"></div>
