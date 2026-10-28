@@ -498,6 +498,26 @@ function setAccent(a){
 }
 document.querySelectorAll('.acc').forEach(b=>b.addEventListener('click',()=>setAccent(b.dataset.ac)));
 setAccent((()=>{try{return localStorage.getItem('accent')}catch(e){return null}})()||'blue');
+// ---- 字型 ----
+const SAMPLE='鴻大產業園區環評承諾 PM2.5 130 CMD';
+function renderFonts(){
+  const cur=document.documentElement.dataset.font||'kai';
+  $('fontList').innerHTML=FONTS.map(f=>`<button type="button" class="fopt" role="radio" aria-checked="${f.id===cur}" data-font="${f.id}"><span class="fs" style='font-family:${f.stack}'>${SAMPLE}</span><span class="fn">${f.name}<small>${f.note}${f.gf?'・網路字型':''}</small></span></button>`).join('');
+}
+let fontPreviewed=false;
+function previewFonts(){ // 只下載範例字所需的字（檔案極小），選定後才下載完整字型
+  if(fontPreviewed)return;fontPreviewed=true;
+  FONTS.filter(f=>f.gf).forEach(f=>{const l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family='+f.gf.split(':')[0]+'&display=swap&text='+encodeURIComponent(SAMPLE);document.head.appendChild(l)});
+}
+function setFont(id){
+  id=applyFont(id);try{localStorage.setItem('font',id)}catch(e){}
+  document.querySelectorAll('.fopt').forEach(b=>b.setAttribute('aria-checked',b.dataset.font===id));
+  setHdr();
+}
+renderFonts();
+$('fontList').addEventListener('click',e=>{const b=e.target.closest('.fopt');if(b)setFont(b.dataset.font)});
+$('setBtn').addEventListener('click',previewFonts);
+document.querySelector('#mtabs button[data-m="set"]').addEventListener('click',previewFonts);
 // ---- 深淺模式 ----
 const mqDark=matchMedia('(prefers-color-scheme: dark)');
 function applyMode(){document.documentElement.classList.toggle('mode-dark',SET.mode==='dark'||(SET.mode==='auto'&&mqDark.matches))}
@@ -561,7 +581,7 @@ document.addEventListener('click',e=>{if(!$('setPanel').hidden&&!e.target.closes
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('setPanel').hidden){$('setPanel').hidden=true;$('setBtn').setAttribute('aria-expanded','false');$('setBtn').focus()}});
 $('setPanel').addEventListener('change',e=>{const k=e.target.dataset.key;if(!k)return;SET[k]=e.target.checked;applySet(true)});
 $('setPanel').addEventListener('click',e=>{const b=e.target.closest('.seg button');if(!b)return;SET[b.closest('.seg').dataset.key]=b.dataset.v;applySet(true)});
-$('setReset').addEventListener('click',()=>{SET=Object.assign({},SDEF);applySet(true);setAccent('blue');flashMsg('已還原預設設定')});
+$('setReset').addEventListener('click',()=>{SET=Object.assign({},SDEF);applySet(true);setAccent('blue');setFont('kai');flashMsg('已還原預設設定')});
 $('sideBtn').addEventListener('click',()=>{SET.side=SET.side==='hide'?'show':'hide';applySet(false)});
 applySet(false);
 // ---- 手機版 ----
