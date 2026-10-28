@@ -625,7 +625,7 @@ $('cmp').addEventListener('touchend',e=>{if(tx0===null)return;const t=e.changedT
 document.querySelectorAll('.vtab').forEach(b=>b.addEventListener('click',()=>{mPrev=b.dataset.v==='cmp'?'cmp':'search';document.querySelectorAll('#mtabs button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.m===mPrev))}));
 // ---- 資料管理：GitHub 上傳頁 ----
 /* 預設網址寫在網站檔案中，上傳 GitHub 後任何裝置都有；在欄位修改後存於該瀏覽器 */
-const GITHUB_UPLOAD_URL='https://github.com/albert-bot-ship/Industrial-Park/upload/main';   // ← 實際網址填在這裡，例如 'https://github.com/帳號/repo名稱/upload/main'
+const GITHUB_UPLOAD_URL='https://github.com/albert-bot-ship/Industrial-Park';   // ← 實際網址填在這裡，例如 'https://github.com/帳號/repo名稱/upload/main'
 const GHK='hongda-github-url';
 function ghGet(){try{return localStorage.getItem(GHK)||GITHUB_UPLOAD_URL}catch(e){return GITHUB_UPLOAD_URL}}
 function ghMsg(t,err){const m=$('ghMsg');m.textContent=t;m.classList.toggle('err',!!err)}
