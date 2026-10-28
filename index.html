@@ -112,6 +112,13 @@ if(m==="dark"||(m==="auto"&&window.matchMedia&&matchMedia("(prefers-color-scheme
         <label class="sw-row"><span>導覽列跑馬燈光線<small>頂部底線的流動光點</small></span><input type="checkbox" data-key="marquee"></label>
         <label class="sw-row"><span>列印時排成清單<small>只印檔案、頁碼與內容，省略按鈕與裝飾</small></span><input type="checkbox" data-key="printlist"></label>
       </div>
+      <div class="setcard">
+        <h3>資料管理</h3>
+        <div class="gh-btns"><button type="button" class="ghbtn" id="ghGo">🚀 上傳 GitHub</button></div>
+        <label class="ghlbl" for="ghUrl">GitHub 上傳頁網址</label>
+        <input type="url" id="ghUrl" class="ghin" placeholder="https://github.com/帳號/repo名稱/upload/main" autocomplete="off" spellcheck="false">
+        <p class="ghmsg" id="ghMsg" role="status"></p>
+      </div>
       <div class="setfoot"><button type="button" id="setReset">還原預設</button></div>
     </div>
   </div>
