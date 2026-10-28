@@ -623,6 +623,29 @@ $('cmp').addEventListener('touchend',e=>{if(tx0===null)return;const t=e.changedT
   if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5){const i=RV.indexOf(st.cmpCol||'r1');const j=Math.max(0,Math.min(2,i+(dx<0?1:-1)));if(j!==i){setCmpCol(RV[j]);window.scrollTo({top:0})}}},{passive:true});
 // 電腦版切換檢視時，同步手機分頁狀態
 document.querySelectorAll('.vtab').forEach(b=>b.addEventListener('click',()=>{mPrev=b.dataset.v==='cmp'?'cmp':'search';document.querySelectorAll('#mtabs button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.m===mPrev))}));
+// ---- 資料管理：GitHub 上傳頁 ----
+/* 預設網址寫在網站檔案中，上傳 GitHub 後任何裝置都有；在欄位修改後存於該瀏覽器 */
+const GITHUB_UPLOAD_URL='https://github.com/albert-bot-ship/Industrial-Park/upload/main';   // ← 實際網址填在這裡，例如 'https://github.com/帳號/repo名稱/upload/main'
+const GHK='hongda-github-url';
+function ghGet(){try{return localStorage.getItem(GHK)||GITHUB_UPLOAD_URL}catch(e){return GITHUB_UPLOAD_URL}}
+function ghMsg(t,err){const m=$('ghMsg');m.textContent=t;m.classList.toggle('err',!!err)}
+function ghLoad(){$('ghUrl').value=ghGet();ghMsg('')}
+$('ghUrl').addEventListener('blur',()=>{
+  const v=$('ghUrl').value.trim();
+  if(v===ghGet())return;
+  if(v===''){try{localStorage.removeItem(GHK)}catch(e){}$('ghUrl').value=GITHUB_UPLOAD_URL;ghMsg(GITHUB_UPLOAD_URL?'已恢復為預設網址':'已清除');return}
+  if(!/^https:\/\//i.test(v)){ghMsg('網址必須以 https:// 開頭，未儲存',true);return}
+  try{localStorage.setItem(GHK,v)}catch(e){}
+  ghMsg('已儲存');
+});
+$('ghGo').addEventListener('click',()=>{
+  const v=ghGet();
+  if(!v){alert('請先填寫 GitHub 上傳頁網址');$('ghUrl').scrollIntoView({block:'center'});$('ghUrl').focus();return}
+  window.open(v,'_blank','noopener');
+});
+$('setBtn').addEventListener('click',ghLoad);
+document.querySelector('#mtabs button[data-m="set"]').addEventListener('click',ghLoad);
+ghLoad();
 // ---- 啟動 ----
 refreshCounts();
 run();
