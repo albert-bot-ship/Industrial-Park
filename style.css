@@ -14,8 +14,10 @@
   --vglow:color-mix(in srgb,var(--m-violet) 22%,transparent);
   --soft:color-mix(in srgb,var(--m-blue) 5%,#fff); --soft2:color-mix(in srgb,var(--m-blue) 13%,#fff);
   --tint1:color-mix(in srgb,var(--m-blue) 16%,transparent); --tint0:color-mix(in srgb,var(--m-blue) 3%,transparent);
-  --bg:color-mix(in srgb,var(--m-blue) 4%,#F4F6F7); --bg2:color-mix(in srgb,var(--m-blue) 8%,#ECEFF1);
+  --bg:color-mix(in srgb,var(--m-blue) 2%,#F6F7F8); --bg2:color-mix(in srgb,var(--m-blue) 8%,#ECEFF1);
   --panel:#FFFFFF; --panel2:color-mix(in srgb,var(--m-blue) 2%,#FAFBFB);
+  --card-bg:color-mix(in srgb,var(--m-blue) 5%,#FFFFFF);   /* 結果卡片：主題色極淡底 */
+  --side-bg:#F1F3F4;                                       /* 文件導覽：淡灰底 */
   --ink:#14232A; --muted:#4B5D63;
   /* ---- 固定色（不隨主題色變）：紅字承諾、搜尋標示 ---- */
   --red:#D0021B; --red-glow:rgba(208,2,27,.18);
@@ -42,6 +44,7 @@
   --tint1:color-mix(in srgb,var(--m-blue-light) 18%,transparent); --tint0:color-mix(in srgb,var(--m-blue-light) 3%,transparent);
   --bg:color-mix(in srgb,var(--m-blue-light) 4%,#0F1517); --bg2:color-mix(in srgb,var(--m-blue-light) 6%,#141C1F);
   --panel:#1A2226; --panel2:#1F282C;
+  --card-bg:color-mix(in srgb,var(--m-blue-light) 7%,#1A2226); --side-bg:#141B1E;
   --ink:#E2ECEA; --muted:#9FB0B2;
   --red:#FF7070; --mark-bg:#E2B93B; --mark-ink:#16110A; --mark-line:#FFD866; --doc-hl:#5C5420; --doc-hl-ink:#FFF4B8;
 }
@@ -104,7 +107,7 @@ button:focus-visible,label:focus-within{outline:2px solid var(--cyan);outline-of
 
 /* 版面 */
 .wrap{max-width:1320px;margin:0 auto;padding:22px;display:grid;grid-template-columns:270px 1fr;gap:26px;align-items:start}
-aside{position:sticky;top:140px;max-height:calc(100vh - 160px);overflow:auto;background:var(--panel);border:1px solid var(--edge);border-radius:14px;padding:16px 14px;box-shadow:0 2px 12px rgba(16,37,42,.05)}
+aside{position:sticky;top:140px;max-height:calc(100vh - 160px);overflow:auto;background:var(--side-bg);border:1px solid var(--edge);border-radius:14px;padding:16px 14px;box-shadow:0 2px 12px rgba(16,37,42,.05)}
 aside h2{font-size:12px;color:var(--cyan2);font-weight:600;margin:20px 0 8px;letter-spacing:.08em;display:flex;align-items:center;gap:8px}
 aside h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--edge-hi),transparent)}
 aside h2:first-child{margin-top:0}
@@ -142,7 +145,7 @@ aside h2:first-child{margin-top:0}
 .bar .count .num{font-size:28px;font-weight:700;color:var(--cyan2);font-variant-numeric:tabular-nums;text-shadow:0 0 14px var(--glow);margin:0 4px}
 .bar .sub{font-size:13px;color:var(--muted)}
 .res{list-style:none;margin:0;padding:0}
-.card{position:relative;background:var(--panel);border:1px solid var(--edge);border-radius:14px;margin-bottom:14px;overflow:hidden;box-shadow:0 2px 10px rgba(16,37,42,.05);
+.card{position:relative;background:var(--card-bg);border:1px solid var(--edge);border-radius:14px;margin-bottom:14px;overflow:hidden;box-shadow:0 2px 10px rgba(16,37,42,.05);
   transition:transform .25s ease,border-color .25s,box-shadow .25s}
 .card:hover{transform:translateY(-3px);border-color:var(--edge-hi);box-shadow:0 10px 26px rgba(16,37,42,.10),0 0 20px var(--glow)}
 .card.has-red::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--red),rgba(208,2,27,.35))}
@@ -172,7 +175,7 @@ aside h2:first-child{margin-top:0}
 .qa>div:last-child{font-size:13px;color:var(--muted);font-family:var(--sans)}
 .qa .lbl{display:block;font-family:var(--sans);font-size:12px;color:var(--cyan2);margin-bottom:4px}
 .body.clamp{max-height:26em;overflow:hidden;position:relative}
-.body.clamp::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5em;background:linear-gradient(transparent,var(--panel))}
+.body.clamp::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5em;background:linear-gradient(transparent,var(--card-bg))}
 .expand{display:block;width:100%;font:inherit;font-size:13px;background:var(--soft);color:var(--cyan2);border:0;border-top:1px solid var(--edge);padding:8px;cursor:pointer;transition:background .2s}
 .expand:hover{background:var(--soft2)}
 .more{display:block;margin:10px auto 30px;font:inherit;padding:11px 28px;background:var(--panel);color:var(--cyan2);border:1px solid var(--edge-hi);border-radius:30px;cursor:pointer;transition:box-shadow .25s,background .25s}
@@ -262,7 +265,7 @@ mark.flash{animation:flash 1.2s ease 2}
 .ccol{background:var(--panel2);border:1px solid var(--edge);border-radius:14px;padding:10px}
 .ccol h3{position:sticky;top:var(--hdr,150px);z-index:2;margin:-10px -10px 10px;padding:10px 12px;font-size:14px;background:var(--panel);border-bottom:2px solid var(--cyan);border-radius:14px 14px 0 0;display:flex;justify-content:space-between;gap:8px}
 .ccol h3 span{color:var(--muted);font-weight:400;font-size:13px}
-.ccard{position:relative;background:var(--panel);border:1px solid var(--edge);border-radius:10px;margin-bottom:10px;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.ccard{position:relative;background:var(--card-bg);border:1px solid var(--edge);border-radius:10px;margin-bottom:10px;overflow:hidden;transition:border-color .2s,box-shadow .2s}
 .ccard:hover{border-color:var(--edge-hi);box-shadow:0 0 14px var(--glow)}
 .ccard.has-red::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--red)}
 .ccard .meta{padding:6px 10px;font-size:12px}
@@ -368,7 +371,7 @@ body.s-twocol .qa>div:nth-child(2){border-left:1px solid var(--edge)}
 .ovw h3{font-size:14px;color:var(--cyan2);margin:18px 0 8px}
 .ovw h3:first-child{margin-top:0}
 .ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
-.ov-t{font:inherit;text-align:left;background:var(--panel);border:1px solid var(--edge);border-radius:12px;padding:10px 12px;cursor:pointer;color:var(--ink);transition:border-color .2s,box-shadow .2s,transform .2s}
+.ov-t{font:inherit;text-align:left;background:var(--card-bg);border:1px solid var(--edge);border-radius:12px;padding:10px 12px;cursor:pointer;color:var(--ink);transition:border-color .2s,box-shadow .2s,transform .2s}
 .ov-t:hover{border-color:var(--edge-hi);box-shadow:0 0 14px var(--glow);transform:translateY(-2px)}
 .ov-t .nm{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}
 .ov-t .v{font-size:22px;font-weight:700;color:var(--cyan2);font-variant-numeric:tabular-nums}
@@ -518,3 +521,7 @@ body.s-sidehide aside{display:none}
 .fopt .fs{font-size:17px;line-height:1.4}
 .fopt .fn{font-family:Arial,"Microsoft JhengHei","PingFang TC",sans-serif;font-size:13px;font-weight:600;color:var(--cyan2)}
 .fopt .fn small{font-weight:400;color:var(--muted);margin-left:6px;font-size:12px}
+
+/* 卡片內層次：標頭與審查意見欄比卡片底色再深一點 */
+.card .meta{background:color-mix(in srgb,var(--cyan) 6%,transparent)}
+.qa>div:first-child{background:color-mix(in srgb,var(--cyan) 5%,transparent)!important;border-radius:8px}
