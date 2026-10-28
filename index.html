@@ -5,6 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>鴻大產業園區 環評承諾檢索</title>
 <link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script>
+/* ===== 字型清單（增減字型只需修改這裡）=====
+   id：識別名稱；name：顯示名稱；note：說明；stack：字型順序；gf：Google Fonts 名稱（空白＝電腦內建，不需下載） */
+window.FONTS=[
+  {id:"kai",     name:"標楷體",     note:"電腦內建・英數 Arial（手機會改用系統字）", stack:'Arial,"DFKai-SB","標楷體","BiauKai","Kaiti TC","KaiTi",serif', gf:""},
+  {id:"notosans",name:"思源黑體",   note:"現代、清楚",       stack:'"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif', gf:"Noto+Sans+TC:wght@400;600;700"},
+  {id:"notoserif",name:"思源宋體",  note:"正式、像公文",     stack:'"Noto Serif TC","PMingLiU","Songti TC",serif', gf:"Noto+Serif+TC:wght@400;600;700"},
+  {id:"wenkai",  name:"霞鶩文楷",   note:"楷體風、比標楷體好讀", stack:'"LXGW WenKai TC","DFKai-SB","標楷體","BiauKai",serif', gf:"LXGW+WenKai+TC:wght@400;700"},
+  {id:"iansui",  name:"芫荽",       note:"手寫感楷體",       stack:'"Iansui","DFKai-SB","標楷體","BiauKai",serif', gf:"Iansui"},
+  {id:"cactus",  name:"仙人掌明體", note:"古典明體",         stack:'"Cactus Classical Serif","PMingLiU","Songti TC",serif', gf:"Cactus+Classical+Serif"},
+  {id:"huninn",  name:"粉圓體",     note:"圓體、活潑",       stack:'"Huninn","Microsoft JhengHei","PingFang TC",sans-serif', gf:"Huninn"}
+];
+window.applyFont=function(id){
+  var F=window.FONTS,f=F[0];for(var i=0;i<F.length;i++)if(F[i].id===id)f=F[i];
+  var d=document.documentElement;d.style.setProperty("--sans",f.stack);d.style.setProperty("--serif",f.stack);d.dataset.font=f.id;
+  if(f.gf&&!document.getElementById("gf-"+f.id)){var l=document.createElement("link");l.id="gf-"+f.id;l.rel="stylesheet";l.href="https://fonts.googleapis.com/css2?family="+f.gf+"&display=swap";document.head.appendChild(l)}
+  return f.id;
+};
+try{window.applyFont(localStorage.getItem("font")||"kai")}catch(e){window.applyFont("kai")}
+</script>
 <script>
 /* 渲染前先套用主題色與深淺模式，避免重整時閃色 */
 (function(){var d=document.documentElement,a="blue",m="light";
@@ -20,6 +41,7 @@ if(m==="dark"||(m==="auto"&&window.matchMedia&&matchMedia("(prefers-color-scheme
     <div class="setpanel" id="setPanel" hidden role="dialog" aria-label="顯示設定">
       <h4>模式</h4><div class="seg" data-key="mode"><button type="button" data-v="light">淺色</button><button type="button" data-v="dark">深色</button><button type="button" data-v="auto">跟隨系統</button></div>
       <h4>主題色</h4><div class="accents" role="radiogroup" aria-label="主題色"><button type="button" class="acc accent-blue" role="radio" aria-checked="false" data-ac="blue"><span class="dot" aria-hidden="true"></span>blue</button><button type="button" class="acc accent-green" role="radio" aria-checked="false" data-ac="green"><span class="dot" aria-hidden="true"></span>green</button><button type="button" class="acc accent-gold" role="radio" aria-checked="false" data-ac="gold"><span class="dot" aria-hidden="true"></span>gold</button><button type="button" class="acc accent-pink" role="radio" aria-checked="false" data-ac="pink"><span class="dot" aria-hidden="true"></span>pink</button><button type="button" class="acc accent-cyber" role="radio" aria-checked="false" data-ac="cyber"><span class="dot" aria-hidden="true"></span>cyber</button><button type="button" class="acc accent-coral" role="radio" aria-checked="false" data-ac="coral"><span class="dot" aria-hidden="true"></span>coral</button><button type="button" class="acc accent-lavender" role="radio" aria-checked="false" data-ac="lavender"><span class="dot" aria-hidden="true"></span>lavender</button><button type="button" class="acc accent-glacier" role="radio" aria-checked="false" data-ac="glacier"><span class="dot" aria-hidden="true"></span>glacier</button><button type="button" class="acc accent-charcoal" role="radio" aria-checked="false" data-ac="charcoal"><span class="dot" aria-hidden="true"></span>charcoal</button><button type="button" class="acc accent-jadegold" role="radio" aria-checked="false" data-ac="jadegold"><span class="dot" aria-hidden="true"></span>jadegold</button></div>
+      <h4>字型</h4><div class="fonts" id="fontList" role="radiogroup" aria-label="字型"></div>
       <h4>閱讀密度</h4><div class="seg" data-key="density"><button type="button" data-v="cozy">舒適</button><button type="button" data-v="compact">緊湊</button></div>
       <div class="set-desk"><h4>側欄（文件導覽）</h4><div class="seg" data-key="side"><button type="button" data-v="show">顯示</button><button type="button" data-v="hide">收合</button></div></div>
       <h4>顯示方式</h4>
