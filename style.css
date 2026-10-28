@@ -16,7 +16,8 @@
   --tint1:color-mix(in srgb,var(--m-blue) 16%,transparent); --tint0:color-mix(in srgb,var(--m-blue) 3%,transparent);
   --bg:color-mix(in srgb,var(--m-blue) 2%,#F6F7F8); --bg2:color-mix(in srgb,var(--m-blue) 8%,#ECEFF1);
   --panel:#FFFFFF; --panel2:color-mix(in srgb,var(--m-blue) 2%,#FAFBFB);
-  --card-bg:color-mix(in srgb,var(--m-blue) 5%,#FFFFFF);   /* 結果卡片：主題色極淡底 */
+  --card-tint:15%;                                          /* 卡片底色深度（設定頁可調） */
+  --card-bg:color-mix(in srgb,var(--m-blue) var(--card-tint),#FFFFFF);   /* 結果卡片：主題色淡底 */
   --side-bg:#F1F3F4;                                       /* 文件導覽：淡灰底 */
   --ink:#14232A; --muted:#4B5D63;
   /* ---- 固定色（不隨主題色變）：紅字承諾、搜尋標示 ---- */
@@ -44,7 +45,7 @@
   --tint1:color-mix(in srgb,var(--m-blue-light) 18%,transparent); --tint0:color-mix(in srgb,var(--m-blue-light) 3%,transparent);
   --bg:color-mix(in srgb,var(--m-blue-light) 4%,#0F1517); --bg2:color-mix(in srgb,var(--m-blue-light) 6%,#141C1F);
   --panel:#1A2226; --panel2:#1F282C;
-  --card-bg:color-mix(in srgb,var(--m-blue-light) 7%,#1A2226); --side-bg:#141B1E;
+  --card-bg:color-mix(in srgb,var(--m-blue-light) calc(var(--card-tint) * 0.8),#1A2226); --side-bg:#141B1E;
   --ink:#E2ECEA; --muted:#9FB0B2;
   --red:#FF7070; --mark-bg:#E2B93B; --mark-ink:#16110A; --mark-line:#FFD866; --doc-hl:#5C5420; --doc-hl-ink:#FFF4B8;
 }
@@ -569,3 +570,9 @@ body.setview .top,body.setview .wrap,body.setview .nav,body.setview .totop{displ
   .wrap{padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px))}
   .setpage-bar{padding-top:calc(10px + env(safe-area-inset-top,0px));padding-left:max(14px,env(safe-area-inset-left,0px))}
 }
+
+/* ===== 卡片外框（設定頁可切換） ===== */
+body.s-cedge-border .card,body.s-cedge-border .ccard{border-color:color-mix(in srgb,var(--cyan) 55%,transparent)}
+body.s-cedge-line .card:not(.has-red)::before,body.s-cedge-line .ccard:not(.has-red)::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--cyan);z-index:1}
+body.s-cedge-line .card.has-red::before,body.s-cedge-line .ccard.has-red::before{width:4px}
+@media print{body .card::before{display:none}}
