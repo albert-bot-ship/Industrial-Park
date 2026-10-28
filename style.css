@@ -336,10 +336,6 @@ aside.cmpmode .tn[data-id="all"],aside.cmpmode .tn[data-id="pin"],aside.cmpmode 
 .setwrap{float:right;position:relative;margin-left:12px}
 .setbtn{font:inherit;font-size:13px;color:var(--cyan2);background:var(--panel);border:1px solid var(--edge);border-radius:20px;padding:3px 12px;cursor:pointer}
 .setbtn:hover,.setbtn[aria-expanded="true"]{border-color:var(--edge-hi);background:var(--chip)}
-.setpanel{position:absolute;right:0;top:calc(100% + 8px);z-index:12;width:330px;max-height:calc(100vh - 120px);overflow:auto;background:var(--panel);color:var(--ink);border:1px solid var(--edge-hi);border-radius:14px;padding:14px 16px;box-shadow:0 12px 32px rgba(0,0,0,.18);font-size:14px;line-height:1.5}
-.setpanel[hidden]{display:none}
-.setpanel h4{margin:12px 0 6px;font-size:12px;color:var(--cyan2);font-weight:600}
-.setpanel h4:first-child{margin-top:0}
 .sw-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:5px 0;cursor:pointer}
 .sw-row small{display:block;color:var(--muted);font-size:12px}
 .sw-row input{accent-color:var(--cyan);width:18px;height:18px;flex:none}
@@ -477,7 +473,6 @@ body.s-sidehide aside{display:none}
   .totop{right:10px;bottom:calc(132px + env(safe-area-inset-bottom,0px))}
   .toast{bottom:calc(80px + env(safe-area-inset-bottom,0px))}
   /* 設定分頁：全螢幕 */
-  .setpanel{position:fixed;left:0;right:0;top:0;bottom:calc(58px + env(safe-area-inset-bottom,0px));width:auto;max-height:none;border-radius:0;border:0;padding:18px 18px 24px;box-shadow:none}
   .setclose{display:inline-block;margin-left:8px;color:var(--m-on)!important;background:var(--cyan)!important;border-color:var(--cyan)!important}
   .sw-row{padding:9px 0}
   .set-desk{display:none}
@@ -525,3 +520,31 @@ body.s-sidehide aside{display:none}
 /* 卡片內層次：標頭與審查意見欄比卡片底色再深一點 */
 .card .meta{background:color-mix(in srgb,var(--cyan) 6%,transparent)}
 .qa>div:first-child{background:color-mix(in srgb,var(--cyan) 5%,transparent)!important;border-radius:8px}
+
+/* ===== 設定頁（同網頁內獨立頁面） ===== */
+.setpage[hidden]{display:none}
+body.setview .top,body.setview .wrap,body.setview .nav,body.setview .totop{display:none!important}
+.setpage{min-height:100vh;background:var(--bg)}
+.setpage-bar{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:14px;padding:12px 22px;background:var(--panel);border-bottom:1px solid var(--edge)}
+.setpage-bar h2{margin:0;font-size:20px;color:var(--cyan2)}
+.setback{font:inherit;font-size:14px;color:var(--cyan2);background:var(--panel);border:1px solid var(--edge-hi);border-radius:20px;padding:6px 16px;cursor:pointer}
+.setback:hover{background:var(--chip)}
+.setpage-in{max-width:1180px;margin:0 auto;padding:22px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
+.setcol{display:flex;flex-direction:column;gap:20px}
+.setcard{background:var(--panel);border:1px solid var(--edge);border-radius:14px;padding:18px 20px;font-size:14px;line-height:1.5}
+.setcard h3{margin:0 0 4px;font-size:16px;color:var(--ink);padding-bottom:8px;border-bottom:2px solid var(--cyan)}
+.setcard h4{margin:16px 0 8px;font-size:13px;color:var(--cyan2);font-weight:600}
+.setcard .accents{gap:14px}
+.setcard .sw-row{padding:9px 0;border-bottom:1px dashed var(--edge)}
+.setcard .sw-row:last-child{border-bottom:0}
+.setpage .setfoot{display:flex;justify-content:flex-end;border:0;margin:0;padding:0}
+.setpage .setfoot button{font:inherit;font-size:14px;color:var(--muted);background:var(--panel);border:1px solid var(--edge);border-radius:20px;padding:6px 16px;cursor:pointer}
+.setpage .setfoot button:hover{color:var(--red);border-color:var(--red)}
+@media (max-width:900px){
+  .setpage{padding-bottom:10px}
+  .setpage-bar{padding:10px 14px}
+  .setpage-in{grid-template-columns:1fr;padding:12px;gap:12px}
+  .setcol{gap:12px}
+  .setcard{padding:14px}
+}
+@media print{.setpage{display:none!important}}
