@@ -37,24 +37,7 @@ if(m==="dark"||(m==="auto"&&window.matchMedia&&matchMedia("(prefers-color-scheme
 </head>
 <body>
 <header class="top"><div class="top-in">
-  <div class="title"><div class="setwrap"><button type="button" class="setbtn" id="setBtn" aria-expanded="false" aria-controls="setPanel">⚙ 設定</button>
-    <div class="setpanel" id="setPanel" hidden role="dialog" aria-label="顯示設定">
-      <h4>模式</h4><div class="seg" data-key="mode"><button type="button" data-v="light">淺色</button><button type="button" data-v="dark">深色</button><button type="button" data-v="auto">跟隨系統</button></div>
-      <h4>主題色</h4><div class="accents" role="radiogroup" aria-label="主題色"><button type="button" class="acc accent-blue" role="radio" aria-checked="false" data-ac="blue"><span class="dot" aria-hidden="true"></span>blue</button><button type="button" class="acc accent-green" role="radio" aria-checked="false" data-ac="green"><span class="dot" aria-hidden="true"></span>green</button><button type="button" class="acc accent-gold" role="radio" aria-checked="false" data-ac="gold"><span class="dot" aria-hidden="true"></span>gold</button><button type="button" class="acc accent-pink" role="radio" aria-checked="false" data-ac="pink"><span class="dot" aria-hidden="true"></span>pink</button><button type="button" class="acc accent-cyber" role="radio" aria-checked="false" data-ac="cyber"><span class="dot" aria-hidden="true"></span>cyber</button><button type="button" class="acc accent-coral" role="radio" aria-checked="false" data-ac="coral"><span class="dot" aria-hidden="true"></span>coral</button><button type="button" class="acc accent-lavender" role="radio" aria-checked="false" data-ac="lavender"><span class="dot" aria-hidden="true"></span>lavender</button><button type="button" class="acc accent-glacier" role="radio" aria-checked="false" data-ac="glacier"><span class="dot" aria-hidden="true"></span>glacier</button><button type="button" class="acc accent-charcoal" role="radio" aria-checked="false" data-ac="charcoal"><span class="dot" aria-hidden="true"></span>charcoal</button><button type="button" class="acc accent-jadegold" role="radio" aria-checked="false" data-ac="jadegold"><span class="dot" aria-hidden="true"></span>jadegold</button></div>
-      <h4>字型</h4><div class="fonts" id="fontList" role="radiogroup" aria-label="字型"></div>
-      <h4>閱讀密度</h4><div class="seg" data-key="density"><button type="button" data-v="cozy">舒適</button><button type="button" data-v="compact">緊湊</button></div>
-      <div class="set-desk"><h4>側欄（文件導覽）</h4><div class="seg" data-key="side"><button type="button" data-v="show">顯示</button><button type="button" data-v="hide">收合</button></div></div>
-      <h4>顯示方式</h4>
-      <label class="sw-row"><span>紅字摘要模式<small>有紅字的卡片只顯示承諾句，點「看全文」展開</small></span><input type="checkbox" data-key="redsum"></label>
-      <label class="sw-row"><span>精簡卡片標頭<small>隱藏重複的「開啟 PDF」文字，頁碼仍可點</small></span><input type="checkbox" data-key="slimhead"></label>
-      <label class="sw-row"><span>審查卡片兩欄<small>修正處移到卡片底部，答覆說明較寬</small></span><input type="checkbox" data-key="twocol"></label>
-      <label class="sw-row"><span>未搜尋時顯示概況<small>開啟時先看各文件、章節的段數與承諾數</small></span><input type="checkbox" data-key="overview"></label>
-      <label class="sw-row"><span>長段落符合處小地圖<small>卡片右緣標出關鍵字位置，可點選跳到</small></span><input type="checkbox" data-key="minimap"></label>
-      <label class="sw-row"><span>回到頂端按鈕</span><input type="checkbox" data-key="totop"></label>
-      <label class="sw-row"><span>導覽列跑馬燈光線<small>頂部底線的流動光點</small></span><input type="checkbox" data-key="marquee"></label>
-      <label class="sw-row"><span>列印時排成清單<small>只印檔案、頁碼與內容，省略按鈕與裝飾</small></span><input type="checkbox" data-key="printlist"></label>
-      <div class="setfoot"><button type="button" id="setReset">還原預設</button><button type="button" class="setclose" id="setClose">完成</button></div>
-    </div></div><strong>鴻大產業園區 環評承諾檢索</strong>第八章、三次審查意見回覆對照表、執行重點說明　全文收錄，紅字為環評具體承諾</div>
+  <div class="title"><div class="setwrap"><button type="button" class="setbtn" id="setBtn" aria-controls="setPanel">⚙ 設定</button></div><strong>鴻大產業園區 環評承諾檢索</strong>第八章、三次審查意見回覆對照表、執行重點說明　全文收錄，紅字為環評具體承諾</div>
   <div class="sbox">
     <label for="q" style="position:absolute;left:-9999px">搜尋</label>
     <span class="qicon" aria-hidden="true"></span><input id="q" type="search" placeholder="輸入關鍵字，多個關鍵字以空格分隔，例：石虎 路殺" autocomplete="off">
@@ -102,6 +85,37 @@ if(m==="dark"||(m==="auto"&&window.matchMedia&&matchMedia("(prefers-color-scheme
   </main>
 </div>
 
+<section class="setpage" id="setPanel" hidden aria-labelledby="setTitle">
+  <div class="setpage-bar"><button type="button" class="setback" id="setClose">← 返回</button><h2 id="setTitle">設定</h2></div>
+  <div class="setpage-in">
+    <div class="setcard">
+      <h3>外觀</h3>
+      <h4>模式</h4><div class="seg" data-key="mode"><button type="button" data-v="light">淺色</button><button type="button" data-v="dark">深色</button><button type="button" data-v="auto">跟隨系統</button></div>
+      <h4>主題色</h4><div class="accents" role="radiogroup" aria-label="主題色"><button type="button" class="acc accent-blue" role="radio" aria-checked="false" data-ac="blue"><span class="dot" aria-hidden="true"></span>blue</button><button type="button" class="acc accent-green" role="radio" aria-checked="false" data-ac="green"><span class="dot" aria-hidden="true"></span>green</button><button type="button" class="acc accent-gold" role="radio" aria-checked="false" data-ac="gold"><span class="dot" aria-hidden="true"></span>gold</button><button type="button" class="acc accent-pink" role="radio" aria-checked="false" data-ac="pink"><span class="dot" aria-hidden="true"></span>pink</button><button type="button" class="acc accent-cyber" role="radio" aria-checked="false" data-ac="cyber"><span class="dot" aria-hidden="true"></span>cyber</button><button type="button" class="acc accent-coral" role="radio" aria-checked="false" data-ac="coral"><span class="dot" aria-hidden="true"></span>coral</button><button type="button" class="acc accent-lavender" role="radio" aria-checked="false" data-ac="lavender"><span class="dot" aria-hidden="true"></span>lavender</button><button type="button" class="acc accent-glacier" role="radio" aria-checked="false" data-ac="glacier"><span class="dot" aria-hidden="true"></span>glacier</button><button type="button" class="acc accent-charcoal" role="radio" aria-checked="false" data-ac="charcoal"><span class="dot" aria-hidden="true"></span>charcoal</button><button type="button" class="acc accent-jadegold" role="radio" aria-checked="false" data-ac="jadegold"><span class="dot" aria-hidden="true"></span>jadegold</button></div>
+      <h4>字型</h4><div class="fonts" id="fontList" role="radiogroup" aria-label="字型"></div>
+    </div>
+    <div class="setcol">
+      <div class="setcard">
+        <h3>閱讀</h3>
+        <h4>閱讀密度</h4><div class="seg" data-key="density"><button type="button" data-v="cozy">舒適</button><button type="button" data-v="compact">緊湊</button></div>
+        <div class="set-desk"><h4>側欄（文件導覽）</h4><div class="seg" data-key="side"><button type="button" data-v="show">顯示</button><button type="button" data-v="hide">收合</button></div></div>
+        <h4>卡片顯示</h4>
+        <label class="sw-row"><span>紅字摘要模式<small>有紅字的卡片只顯示承諾句，點「看全文」展開</small></span><input type="checkbox" data-key="redsum"></label>
+        <label class="sw-row"><span>精簡卡片標頭<small>隱藏重複的「開啟 PDF」文字，頁碼仍可點</small></span><input type="checkbox" data-key="slimhead"></label>
+        <label class="sw-row"><span>審查卡片兩欄<small>修正處移到卡片底部，答覆說明較寬</small></span><input type="checkbox" data-key="twocol"></label>
+        <label class="sw-row"><span>長段落符合處小地圖<small>卡片右緣標出關鍵字位置，可點選跳到</small></span><input type="checkbox" data-key="minimap"></label>
+      </div>
+      <div class="setcard">
+        <h3>其他</h3>
+        <label class="sw-row"><span>未搜尋時顯示概況<small>開啟時先看各文件、章節的段數與承諾數</small></span><input type="checkbox" data-key="overview"></label>
+        <label class="sw-row"><span>回到頂端按鈕</span><input type="checkbox" data-key="totop"></label>
+        <label class="sw-row"><span>導覽列跑馬燈光線<small>頂部底線的流動光點</small></span><input type="checkbox" data-key="marquee"></label>
+        <label class="sw-row"><span>列印時排成清單<small>只印檔案、頁碼與內容，省略按鈕與裝飾</small></span><input type="checkbox" data-key="printlist"></label>
+      </div>
+      <div class="setfoot"><button type="button" id="setReset">還原預設</button></div>
+    </div>
+  </div>
+</section>
 <div class="toast" id="toast" role="status" hidden></div>
 <button type="button" class="totop" id="totop" hidden>↑ 頂端</button>
 <nav class="mtabs" id="mtabs" aria-label="手機分頁">
