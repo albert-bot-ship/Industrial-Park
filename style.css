@@ -559,3 +559,13 @@ body.setview .top,body.setview .wrap,body.setview .nav,body.setview .totop{displ
 .ghin::placeholder{color:var(--muted)}
 .ghmsg{min-height:1.4em;margin:6px 0 0;font-size:12px;color:var(--cyan2)}
 .ghmsg.err{color:var(--red)}
+
+/* ===== 安全區域（瀏海／動態島、橫向左右）：配合 viewport-fit=cover ===== */
+.top{padding-top:env(safe-area-inset-top,0px)}
+.top-in,.wrap,.setpage-in{padding-left:max(22px,env(safe-area-inset-left,0px));padding-right:max(22px,env(safe-area-inset-right,0px))}
+.setpage-bar{padding-top:calc(12px + env(safe-area-inset-top,0px));padding-left:max(22px,env(safe-area-inset-left,0px));padding-right:max(22px,env(safe-area-inset-right,0px))}
+@media (max-width:900px){
+  .top-in,.wrap,.setpage-in{padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
+  .wrap{padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px))}
+  .setpage-bar{padding-top:calc(10px + env(safe-area-inset-top,0px));padding-left:max(14px,env(safe-area-inset-left,0px))}
+}
