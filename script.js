@@ -324,7 +324,7 @@ $('next').addEventListener('click',()=>goto(cur+1));
 document.addEventListener('keydown',e=>{
   const typing=document.activeElement===$('q');
   if(typing&&e.key==='Enter'){e.preventDefault();$('q').blur();goto(0);return}
-  if(typing||e.altKey||e.ctrlKey||e.metaKey||document.activeElement.closest&&document.activeElement.closest('#tree'))return;
+  if(!$('setPanel').hidden||typing||e.altKey||e.ctrlKey||e.metaKey||document.activeElement.closest&&document.activeElement.closest('#tree'))return;
   if(e.key==='ArrowDown'){e.preventDefault();goto(cur+1)}
   if(e.key==='ArrowUp'){e.preventDefault();goto(cur-1)}
 });
@@ -516,7 +516,6 @@ function setFont(id){
 }
 renderFonts();
 $('fontList').addEventListener('click',e=>{const b=e.target.closest('.fopt');if(b)setFont(b.dataset.font)});
-$('setBtn').addEventListener('click',previewFonts);
 document.querySelector('#mtabs button[data-m="set"]').addEventListener('click',previewFonts);
 // ---- 深淺模式 ----
 const mqDark=matchMedia('(prefers-color-scheme: dark)');
@@ -576,9 +575,22 @@ function applySet(rerun){
   try{localStorage.setItem(SETK,JSON.stringify(SET))}catch(e){}
   if(rerun)run(true);
 }
-$('setBtn').addEventListener('click',e=>{e.stopPropagation();const p=$('setPanel');p.hidden=!p.hidden;$('setBtn').setAttribute('aria-expanded',!p.hidden)});
-document.addEventListener('click',e=>{if(!$('setPanel').hidden&&!e.target.closest('.setwrap')){$('setPanel').hidden=true;$('setBtn').setAttribute('aria-expanded','false')}});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('setPanel').hidden){$('setPanel').hidden=true;$('setBtn').setAttribute('aria-expanded','false');$('setBtn').focus()}});
+// 設定頁：同網頁內切換，返回時保留搜尋結果與捲動位置
+let setY=0;
+function openSettings(){
+  if(!$('setPanel').hidden)return;
+  setY=window.scrollY;previewFonts();
+  $('setPanel').hidden=false;document.body.classList.add('setview');window.scrollTo({top:0});
+  $('setClose').focus({preventScroll:true});
+}
+function closeSettings(restore=true){
+  if($('setPanel').hidden)return;
+  $('setPanel').hidden=true;document.body.classList.remove('setview');
+  setHdr();
+  if(restore)requestAnimationFrame(()=>window.scrollTo({top:setY}));
+}
+$('setBtn').addEventListener('click',()=>{isM()?setMTab('set'):openSettings()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('setPanel').hidden){e.preventDefault();isM()?setMTab(mPrev):closeSettings();$('setBtn').focus()}});
 $('setPanel').addEventListener('change',e=>{const k=e.target.dataset.key;if(!k)return;SET[k]=e.target.checked;applySet(true)});
 $('setPanel').addEventListener('click',e=>{const b=e.target.closest('.seg button');if(!b)return;SET[b.closest('.seg').dataset.key]=b.dataset.v;applySet(true)});
 $('setReset').addEventListener('click',()=>{SET=Object.assign({},SDEF);applySet(true);setAccent('blue');setFont('kai');flashMsg('已還原預設設定')});
@@ -597,14 +609,13 @@ let mPrev='search';
 function setMTab(m){
   document.querySelectorAll('#mtabs button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m));
   document.body.classList.toggle('m-nav',m==='nav');
-  const sp=$('setPanel');
-  if(m==='set'){sp.hidden=false;$('setBtn').setAttribute('aria-expanded','true');return}
-  sp.hidden=true;$('setBtn').setAttribute('aria-expanded','false');
+  if(m==='set'){openSettings();return}
+  closeSettings(false);
   if(m==='search'||m==='cmp'){mPrev=m;const v=m==='cmp'?'cmp':'list';if(st.view!==v){st.view=v;cur=-1;run()}window.scrollTo({top:0})}
   if(m==='nav')window.scrollTo({top:0});
 }
 document.querySelectorAll('#mtabs button').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();setMTab(b.dataset.m)}));
-$('setClose').addEventListener('click',e=>{e.stopPropagation();if(isM())setMTab(mPrev);else{$('setPanel').hidden=true;$('setBtn').setAttribute('aria-expanded','false')}});
+$('setClose').addEventListener('click',e=>{e.stopPropagation();if(isM()){setMTab(mPrev);requestAnimationFrame(()=>window.scrollTo({top:setY}))}else closeSettings()});
 // 對照頁左右滑動切換第1～3次
 let tx0=null,ty0=null;
 $('cmp').addEventListener('touchstart',e=>{const t=e.touches[0];tx0=t.clientX;ty0=t.clientY},{passive:true});
