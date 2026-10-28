@@ -1,0 +1,32 @@
+{
+  "name": "鴻大產業園區 環評承諾檢索",
+  "short_name": "鴻大承諾",
+  "description": "彰化縣花壇鄉鴻大產業園區環評第八章及三次審查意見回覆之承諾檢索",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#07070F",
+  "theme_color": "#07070F",
+  "lang": "zh-TW",
+  "icons": [
+    {
+      "src": "./icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
