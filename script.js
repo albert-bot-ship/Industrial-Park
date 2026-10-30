@@ -489,10 +489,21 @@ $('tree').addEventListener('keydown',e=>{
   if(e.key==='Enter'||e.key===' '){e.preventDefault();items[i].click();setTimeout(()=>{const s=document.querySelector('#tree .tn.sel');s&&s.focus()},0)}
 });
 function renderCrumb(){
-  const n=st.node;const parts=[];
-  if(n.id==='all')parts.push('全部文件');
-  else{parts.push(n.f==='pin'?'執行重點說明':FN[n.f]);if(n.t!==undefined)parts.push(n.t===-1?(n.f==='c8'?'其他（章首、目錄）':'未分類'):D.tags[n.t]);if(n.p!==undefined)parts.push(PHN(n.p))}
-  $('crumb').innerHTML=parts.map((p,i)=>`<span${i===parts.length-1?' class="last"':''}>${p}</span>`).join('<i>›</i>');
+  const n=st.node;const items=[];
+  const lbl=t=>t===-1?(n.f==='c8'?'其他（章首、目錄）':'未分類'):D.tags[t];
+  if(n.id==='all')items.push({label:'全部文件'});
+  else{
+    items.push({label:'全部文件',node:{id:'all'}});
+    items.push({label:n.f==='pin'?'執行重點說明':FN[n.f],node:{id:n.f,f:n.f}});
+    if(n.t!==undefined)items.push({label:lbl(n.t),node:{id:n.f+':'+n.t,f:n.f,t:n.t}});
+    if(n.p!==undefined)items.push({label:PHN(n.p),node:null});
+  }
+  items[items.length-1].node=null; // 最後一層為目前位置，不可點
+  $('crumb').innerHTML=items.map((x,k)=>x.node?`<button type="button" class="crumb-a" data-k="${k}">${x.label}</button>`:`<span class="last">${x.label}</span>`).join('<i>›</i>');
+  $('crumb').querySelectorAll('.crumb-a').forEach(b=>b.addEventListener('click',()=>{
+    const nd=items[+b.dataset.k].node;st.node=nd;if(nd.f&&nd.id!=='pin')st.open.add(nd.f);
+    st.showAll=false;st.limit=40;cur=-1;if(saved){saved=null;$('secbar').hidden=true}run();window.scrollTo({top:0});
+  }));
 }
 
 // ---- 主題色 ----
