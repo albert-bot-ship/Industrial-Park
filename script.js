@@ -669,8 +669,8 @@ $('setBtn').addEventListener('click',ghLoad);
 document.querySelector('#mtabs button[data-m="set"]').addEventListener('click',ghLoad);
 ghLoad();
 // ---- 版本顯示（設定頁底部） ----
-(function(){const v=window.APP_VERSION||'';const m=v.match(/^(\d{4})(\d{2})(\d{2})(?:-(\d+))?$/);
-  $('appVer').textContent=v?('版本：'+(m?`${m[1]}-${m[2]}-${m[3]}${m[4]?' 第'+m[4]+'版':''}`:v)):'';})();
+(function(){const v=window.APP_VERSION||'';const m=v.match(/^(\d{8})-(\d{2})(\d{2})$/);
+  $('appVer').textContent=v?('版本：'+(m?`${m[1]} ${m[2]}:${m[3]}`:v)):'';})();
 // ---- 啟動 ----
 refreshCounts();
 run();
