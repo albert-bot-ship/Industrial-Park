@@ -624,3 +624,13 @@ aside h2::after{background:var(--edge)!important}
 /* 概況方塊：白底；文件方塊頂端用識別色 */
 .ov-t{background:var(--panel)}
 .ov-t[class*="doc-"]{border-top:4px solid var(--dc)}
+
+/* ===== 標題列底色：主題色淡底（B） ===== */
+:root{--top-bg:color-mix(in srgb,var(--m-blue) 12%,#FFFFFF)}
+:root.mode-dark{--top-bg:color-mix(in srgb,var(--m-blue-light) 14%,#1A2226)}
+.top{background:var(--top-bg)}
+
+/* 路徑列可點選 */
+.crumb-a{font:inherit;color:var(--muted);background:none;border:0;padding:2px 4px;margin:0 -4px;border-radius:6px;cursor:pointer;text-decoration:underline;text-decoration-color:transparent;text-underline-offset:3px;transition:color .15s,text-decoration-color .15s,background .15s}
+.crumb-a:hover{color:var(--cyan2);text-decoration-color:currentColor;background:var(--chip)}
+.crumb-a:focus-visible{outline:2px solid var(--cyan);outline-offset:1px}
