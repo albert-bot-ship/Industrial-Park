@@ -26,6 +26,12 @@ D.pin.forEach((p,i)=>{
   S.push({f:'pin',pg:'第'+p.n+'點',pi:1,sec:'',who:'',q:p.q||'',a:p.t+(p.ex?'\n'+p.ex:''),fix:'',tags:[],auto:0,red:/<b>/.test(p.ex||'')});
 });
 D.segs.forEach((x,k)=>S.push({id:k,f:x[0],pg:x[1],pi:x[2],sec:x[3],who:x[4],q:x[5],a:x[6],fix:x[7],tags:x[8],auto:x[9],red:!!x[10],ph:(D.phase&&D.phase[k])||''}));
+// ---- 文件識別圖示（E：圖示＋圓底） ----
+const DOC_ICON={
+  pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4.5l-4 4l-4 1.5l-1.5 1.5l7 7l1.5 -1.5l1.5 -4l4 -4"/><path d="M9 15l-4.5 4.5"/><path d="M14.5 4l5.5 5.5"/></svg>',
+  c8:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0"/><path d="M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0"/><path d="M3 6v13"/><path d="M12 6v13"/><path d="M21 6v13"/></svg>',
+  r1:'1',r2:'2',r3:'3'};
+const docBadge=f=>DOC_ICON[f]?`<span class="dbadge doc-${f}" title="${FN[f]||''}">${DOC_ICON[f]}</span>`:'';
 // ---- 分類校正：載入（overrides.js 檔 > 瀏覽器暫存）----
 const OVK='hongda-tag-overrides';
 let OVR={};
@@ -52,10 +58,12 @@ function refreshCounts(){
 $('onlyAuto').addEventListener('change',e=>{st.onlyAuto=e.target.checked;run()});
 $('tags').addEventListener('click',e=>{const b=e.target.closest('.tagbtn');if(!b)return;toggleTag(+b.dataset.t)});
 function toggleTag(t){st.tags.has(t)?st.tags.delete(t):st.tags.add(t);
-  document.querySelectorAll('#tags .tagbtn').forEach(b=>b.setAttribute('aria-pressed',st.tags.has(+b.dataset.t)));run()}
+  document.querySelectorAll('#tags .tagbtn').forEach(b=>b.setAttribute('aria-pressed',st.tags.has(+b.dataset.t)));tagLabel();run()}
+function tagLabel(){const n=st.tags.size,b=$('tagToggle');if(!b)return;b.innerHTML=(n?`分類（${n}）`:'分類')+' <span aria-hidden="true">▾</span>';b.classList.toggle('on',n>0)}
+$('tagToggle').addEventListener('click',()=>{const r=$('tagRow');r.hidden=!r.hidden;$('tagToggle').setAttribute('aria-expanded',!r.hidden)});
 $('onlyRed').addEventListener('change',e=>{st.onlyRed=e.target.checked;run()});
 $('toggleSide').addEventListener('click',e=>{const o=$('side').classList.toggle('open');e.target.setAttribute('aria-expanded',o)});
-$('clearTags').addEventListener('click',()=>{st.tags.clear();document.querySelectorAll('#tags .tagbtn').forEach(b=>b.setAttribute('aria-pressed','false'));run()});
+$('clearTags').addEventListener('click',()=>{st.tags.clear();document.querySelectorAll('#tags .tagbtn').forEach(b=>b.setAttribute('aria-pressed','false'));tagLabel();run()});
 // ---- 置頂 ----
 let pinUser=null,lastQ='';
 let prog=false;$('pin').addEventListener('toggle',()=>{if(prog){prog=false;return}pinUser=$('pin').open});
@@ -168,7 +176,7 @@ function card(r){
   const chips=s.tags.map(t=>`<button type="button" class="chip${s.auto&&s.f!=='c8'?' auto':''}" data-t="${t}" title="篩選此分類">${D.tags[t]}</button>`).join('');
   const pg=s.f==='pin'?s.pg:(s.f==='c8'?'P.'+s.pg:s.pg);
   const href=encodeURIComponent(D.pdf[s.f])+'#page='+s.pi;
-  const meta=`<div class="meta"><span class="file">${FN[s.f]}</span><a class="pg" href="${href}" target="_blank" rel="noopener" title="開啟原始 PDF 第 ${s.pi} 頁（PDF 須與網頁放在同一資料夾）">${pg}</a>${s.f!=='pin'?`<a class="pdfl" href="${href}" target="_blank" rel="noopener">開啟 PDF 第 ${s.pi} 頁</a>`:''}${s.who?`<span class="who">${s.who}</span>`:''}${r.fuzzy?'<span class="fz">近似</span>':''}${s.f==='c8'?`<span class="phs">${PHN(s.ph)}</span>`:''}${s.fixd?'<span class="fixd">已校正</span>':''}<span class="chips">${chips}</span>${s.f!=='pin'?`<button type="button" class="edt" data-i="${s.i}" aria-expanded="false">✎ 分類</button>`:''}</div><div class="editor" hidden></div>`;
+  const meta=`<div class="meta">${docBadge(s.f)}<span class="file">${FN[s.f]}</span><a class="pg" href="${href}" target="_blank" rel="noopener" title="開啟原始 PDF 第 ${s.pi} 頁（PDF 須與網頁放在同一資料夾）">${pg}</a>${s.f!=='pin'?`<a class="pdfl" href="${href}" target="_blank" rel="noopener">開啟 PDF 第 ${s.pi} 頁</a>`:''}${s.who?`<span class="who">${s.who}</span>`:''}${r.fuzzy?'<span class="fz">近似</span>':''}${s.f==='c8'?`<span class="phs">${PHN(s.ph)}</span>`:''}${s.fixd?'<span class="fixd">已校正</span>':''}<span class="chips">${chips}</span>${s.f!=='pin'?`<button type="button" class="edt" data-i="${s.i}" aria-expanded="false">✎ 分類</button>`:''}</div><div class="editor" hidden></div>`;
   let body;
   if(s.q){body=`<div class="qa"><div><span class="lbl">${s.f==='pin'?'審查意見':'審查意見／會議結論'}</span>${fmt(s.q)}</div><div><span class="lbl">答覆說明</span>${fmt(s.a)}</div><div class="fx${s.fix?'':' fx-empty'}"><span class="lbl">修正處</span>${secLinks(fmt(s.fix))||'—'}</div></div>`}
   else body=(s.sec&&s.f==='c8'&&!s.tags.length?`<div class="sec">${s.sec}</div>`:'')+`<div class="para">${fmt(s.a)}</div>`;
@@ -265,7 +273,7 @@ function closeSection(){
   requestAnimationFrame(()=>window.scrollTo({top:y}));
 }
 function syncUI(){
-  document.querySelectorAll('#tags .tagbtn').forEach(b=>b.setAttribute('aria-pressed',st.tags.has(+b.dataset.t)));
+  document.querySelectorAll('#tags .tagbtn').forEach(b=>b.setAttribute('aria-pressed',st.tags.has(+b.dataset.t)));tagLabel();
   $('onlyRed').checked=st.onlyRed;
 }
 $('secback').addEventListener('click',closeSection);
@@ -371,9 +379,9 @@ function runCmp(P,keep){
   $('sub').textContent='三次審查回覆並排；第八章與執行重點說明不列入此檢視。是否為同一議題請依內容判斷。';
   last=[];
   if(!st.cmpCol)st.cmpCol='r1';
-  box.innerHTML=`<div class="cmptabs" role="tablist">`+RV.map(f=>`<button type="button" role="tab" data-cc="${f}" aria-pressed="${st.cmpCol===f}">第${f[1]}次 ${col[f].length}</button>`).join('')+`</div>`+RV.map(f=>{
+  box.innerHTML=`<div class="cmptabs" role="tablist">`+RV.map(f=>`<button type="button" role="tab" data-cc="${f}" aria-pressed="${st.cmpCol===f}">${docBadge(f)}第${f[1]}次 ${col[f].length}</button>`).join('')+`</div>`+RV.map(f=>{
     const L=col[f],show=L.slice(0,st.cmpLim[f]),rest=L.length-show.length;
-    return `<section class="ccol${st.cmpCol===f?' on':''}" data-f="${f}"><h3>${FN[f]}<span>${L.length} 段</span></h3>`+
+    return `<section class="ccol${st.cmpCol===f?' on':''}" data-f="${f}"><h3><span class="h3l">${docBadge(f)}${FN[f]}</span><span>${L.length} 段</span></h3>`+
       (L.length?show.map(cmpCard).join(''):'<p class="cempty">無符合段落</p>')+
       (rest>0?`<button type="button" class="cmore" data-f="${f}">顯示更多（尚有 ${rest} 段）</button>`:'')+`</section>`;
   }).join('');
@@ -405,7 +413,7 @@ function cmpCard(r){
     const long=len>260;
     body=`<div class="body${long?' clamp':''}">${full}</div>${long?`<button type="button" class="expand">展開全文（本段 ${len} 字）</button>`:''}`;
   }
-  return `<article class="ccard${s.red?' has-red':''}"><div class="meta"><a class="pg" href="${href}" target="_blank" rel="noopener" title="開啟原始 PDF 第 ${s.pi} 頁">${s.pg}</a>${s.who?`<span class="who">${s.who}</span>`:''}${r.fuzzy?'<span class="fz">近似</span>':''}</div>${body}</article>`;
+  return `<article class="ccard${s.red?' has-red':''}"><div class="meta">${docBadge(s.f)}<a class="pg" href="${href}" target="_blank" rel="noopener" title="開啟原始 PDF 第 ${s.pi} 頁">${s.pg}</a>${s.who?`<span class="who">${s.who}</span>`:''}${r.fuzzy?'<span class="fz">近似</span>':''}</div>${body}</article>`;
 }
 $('cmp').addEventListener('click',e=>{
   const tg=e.target.closest('.ctog');if(tg){const a=tg.closest('.ccard');const f=a.querySelector('.cfull'),sm=a.querySelector('.csum');const op=f.hidden;f.hidden=!op;sm.hidden=op;if(!tg.dataset.l)tg.dataset.l=tg.textContent;tg.textContent=op?'回到符合句':tg.dataset.l;if(op){const mk=f.querySelector('mark:not(.hl-doc)');mk&&mk.scrollIntoView({block:'center'})}else a.scrollIntoView({block:'nearest'});return}
@@ -442,7 +450,7 @@ function renderTree(list,searching){
   const item=(n,lv,hasKids,num)=>{
     const sel=st.node.id===n.id, op=st.open.has(n.id);
     return `<div class="tn lv${lv}${sel?' sel':''}${searching&&!num?' zero':''}" data-id="${n.id}" role="treeitem" aria-selected="${sel}"${hasKids?` aria-expanded="${op}"`:''} tabindex="${sel?0:-1}">`+
-      `<span class="tw">${hasKids?(op?'▾':'▸'):''}</span><span class="tl">${n.label}</span><span class="n">${num}</span></div>`;
+      `<span class="tw">${hasKids?(op?'▾':'▸'):''}</span>${lv===0?docBadge(n.f):''}<span class="tl">${n.label}</span><span class="n">${num}</span></div>`;
   };
   let h='';
   TREE.forEach(n=>{
@@ -524,8 +532,8 @@ mqDark.addEventListener&&mqDark.addEventListener('change',()=>{if(SET.mode==='au
 // ---- 概況 ----
 function renderOverview(){
   const rc=f=>S.filter(s=>(!f||f(s))&&s.red).length, nc=f=>S.filter(f).length;
-  const tile=(id,nm,n,r)=>`<button type="button" class="ov-t" data-id="${id}"><span class="nm">${nm}</span><span class="v">${n}<small>段</small></span><span class="rd">紅字 ${r} 段</span></button>`;
-  let h=`<h3>各文件</h3><div class="ov-grid">`+TREE.filter(n=>n.id!=='all').map(n=>tile(n.id,n.label,nc(s=>s.f===n.f),rc(s=>s.f===n.f))).join('')+`</div>`;
+  const tile=(id,nm,n,r,f)=>`<button type="button" class="ov-t${f?' doc-'+f:''}" data-id="${id}"><span class="nm">${f?docBadge(f):''}${nm}</span><span class="v">${n}<small>段</small></span><span class="rd">紅字 ${r} 段</span></button>`;
+  let h=`<h3>各文件</h3><div class="ov-grid">`+TREE.filter(n=>n.id!=='all').map(n=>tile(n.id,n.label,nc(s=>s.f===n.f),rc(s=>s.f===n.f),n.f)).join('')+`</div>`;
   h+=`<h3>第八章各節</h3><div class="ov-grid">`+D.tags.map((t,i)=>{const f=s=>s.f==='c8'&&s.tags.includes(i);const n=nc(f);return n?tile('c8:'+i,t,n,rc(f)):''}).join('')+`</div>`;
   h+=`<h3>第八章各階段</h3><div class="ov-grid">`+PH.map(p=>{const f=s=>s.f==='c8'&&s.ph===p;return `<button type="button" class="ov-t" data-ph="${p}"><span class="nm">${PHN(p)}</span><span class="v">${nc(f)}<small>段</small></span><span class="rd">紅字 ${rc(f)} 段</span></button>`}).join('')+`</div>`;
   h+=`<button type="button" class="ov-all" id="ovAll">列出全部 ${S.length} 段</button>`;
