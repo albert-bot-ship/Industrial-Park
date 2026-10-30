@@ -72,6 +72,7 @@ if(m==="dark"||(m==="auto"&&window.matchMedia&&matchMedia("(prefers-color-scheme
       <nav class="crumb" id="crumb" aria-label="目前位置"></nav>
       <div class="vtabs" role="group" aria-label="檢視方式"><button type="button" class="vtab" data-v="list" aria-pressed="true">一般檢視</button><button type="button" class="vtab" data-v="cmp" aria-pressed="false">歷次回覆對照</button></div>
       <label class="opt redsw"><input type="checkbox" id="onlyRed"> 只看紅字</label>
+      <button type="button" class="tagdd" id="tagToggle" aria-expanded="false" aria-controls="tagRow">分類 <span aria-hidden="true">▾</span></button>
       <details class="tools">
         <summary>分類校正</summary>
         <div class="tools-in">
@@ -81,7 +82,7 @@ if(m==="dark"||(m==="auto"&&window.matchMedia&&matchMedia("(prefers-color-scheme
         </div>
       </details>
     </div>
-    <div class="tagrow"><span class="tagrow-l">分類</span><div id="tags"></div><button type="button" id="clearTags">清除</button></div>
+    <div class="tagrow" id="tagRow" hidden><span class="tagrow-l">分類</span><div id="tags"></div><button type="button" id="clearTags">清除</button></div>
     <details class="pin" id="pin" open hidden></details>
     <div class="bar"><span class="count" id="count"></span><span class="sub" id="sub"></span></div>
     <div class="ovw" id="ovw" hidden></div>
