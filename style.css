@@ -576,3 +576,51 @@ body.s-cedge-border .card,body.s-cedge-border .ccard{border-color:color-mix(in s
 body.s-cedge-line .card:not(.has-red)::before,body.s-cedge-line .ccard:not(.has-red)::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--cyan);z-index:1}
 body.s-cedge-line .card.has-red::before,body.s-cedge-line .ccard.has-red::before{width:4px}
 @media print{body .card::before{display:none}}
+
+/* ===== 視覺重點：主題色只用在「目前選取／搜尋／主要按鈕」，其餘改中性 ===== */
+:root{--edge:#DDE2E5;--chip:#F1F3F4;--n-hover:#E8EBED}
+:root.mode-dark{--edge:#2E3A3E;--chip:#222C2F;--n-hover:#2A3539}
+aside h2,.tagrow-l,.ovw h3,.qa .lbl,.ccard .lbl,.ed-title,.ex .lbl{color:var(--muted)!important}
+aside h2::after{background:var(--edge)!important}
+.crumb i{color:var(--muted)}
+.hint em{color:var(--ink);border-color:var(--edge);background:var(--chip)}
+.meta .pg{color:var(--ink);border-color:var(--edge)}
+.meta a.pg:hover{color:var(--cyan2);border-color:var(--edge-hi);background:var(--panel)}
+.meta .fixd{color:var(--muted)}
+.bar .count .num{color:var(--ink);text-shadow:none}
+.ov-t .v{color:var(--ink)}
+/* 一般按鈕：中性；滑過才出現主題色 */
+#clear,.more,.cmore,.imgbtn,.setback,.expand,.ctog,.rtog,.totop,.setbtn,.tools summary,.sidebtn,.redsw,.tagdd,.seg button:not([aria-pressed="true"]){color:var(--muted);border-color:var(--edge)}
+#clear,.more,.cmore,.setback,.totop,.setbtn,.tools summary,.sidebtn,.redsw,.tagdd{background:var(--panel)}
+.expand,.ctog,.rtog{background:var(--chip)}
+#clear:hover,.more:hover,.cmore:hover,.imgbtn:hover,.setback:hover,.expand:hover,.ctog:hover,.rtog:hover,.totop:hover,.setbtn:hover,.tools summary:hover,.sidebtn:hover,.redsw:hover,.tagdd:hover{color:var(--cyan2);border-color:var(--edge-hi);background:var(--panel);box-shadow:none}
+.nav{border-color:var(--edge);box-shadow:0 6px 18px rgba(16,37,42,.12)}
+.nav button{color:var(--ink);background:var(--chip);border-color:var(--edge)}
+.nav button:hover:not(:disabled){color:var(--cyan2);background:var(--panel);box-shadow:none}
+#tags .tagbtn{color:var(--ink);border-color:var(--edge)}
+.tn:hover{background:var(--n-hover)}
+.ov-t:hover{box-shadow:0 0 0 1px var(--edge-hi)}
+/* ===== 分類收合 ===== */
+.tagdd{font:inherit;font-size:14px;border:1px solid var(--edge);border-radius:20px;padding:5px 12px;cursor:pointer}
+.tagdd.on{background:var(--cyan)!important;color:var(--m-on)!important;border-color:var(--cyan)!important}
+.tagrow[hidden]{display:none}
+@media (max-width:900px){.toolbar .tagdd{order:3;font-size:13px;padding:4px 10px}}
+/* ===== 文件識別圖示（固定色，不隨主題色變） ===== */
+.doc-pin{--dc:#C2185B;--db:#FCE4EC}
+.doc-c8{--dc:#2E7D32;--db:#E8F5E9}
+.doc-r1{--dc:#1565C0;--db:#E3F2FD}
+.doc-r2{--dc:#E65100;--db:#FFF3E0}
+.doc-r3{--dc:#6A1B9A;--db:#F3E5F5}
+:root.mode-dark .dbadge{--db:color-mix(in srgb,var(--dc) 28%,#1A2226);color:color-mix(in srgb,var(--dc) 45%,#fff)}
+.dbadge{display:inline-flex;align-items:center;justify-content:center;flex:none;width:22px;height:22px;border-radius:50%;background:var(--db);color:var(--dc);font-family:Arial,sans-serif;font-size:12px;font-weight:700;line-height:1;vertical-align:middle}
+.dbadge svg{width:14px;height:14px}
+.meta .dbadge{margin-right:-2px}
+.tn .dbadge{margin-right:6px;width:20px;height:20px;font-size:11px}
+.tn .dbadge svg{width:13px;height:13px}
+.ccol h3 .h3l{display:inline-flex;align-items:center;gap:6px}
+.cmptabs .dbadge{width:18px;height:18px;font-size:10px;margin-right:4px}
+.cmptabs button[aria-pressed="true"] .dbadge{background:var(--panel)}
+.ov-t .nm{display:flex;align-items:center;gap:6px}
+/* 概況方塊：白底；文件方塊頂端用識別色 */
+.ov-t{background:var(--panel)}
+.ov-t[class*="doc-"]{border-top:4px solid var(--dc)}
