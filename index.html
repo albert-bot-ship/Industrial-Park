@@ -16,7 +16,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="鴻大承諾">
-<link rel="stylesheet" href="style.css">
+<!-- 版本號：每次更新檔案時一併修改，讓瀏覽器重新下載（格式：日期-當天序號） -->
+<script>window.APP_VERSION="20261030-1";</script>
+<link rel="stylesheet" href="style.css?v=20261030-1">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script>
 /* ===== 字型清單（增減字型只需修改這裡）=====
@@ -134,7 +136,7 @@ if(m==="dark"||(m==="auto"&&window.matchMedia&&matchMedia("(prefers-color-scheme
         <input type="url" id="ghUrl" class="ghin" placeholder="https://github.com/帳號/repo名稱/upload/main" autocomplete="off" spellcheck="false">
         <p class="ghmsg" id="ghMsg" role="status"></p>
       </div>
-      <div class="setfoot"><button type="button" id="setReset">還原預設</button></div>
+      <div class="setfoot"><span class="appver" id="appVer"></span><button type="button" id="setReset">還原預設</button></div>
     </div>
   </div>
 </section>
@@ -146,8 +148,8 @@ if(m==="dark"||(m==="auto"&&window.matchMedia&&matchMedia("(prefers-color-scheme
   <button type="button" data-m="cmp" aria-pressed="false"><span aria-hidden="true">⇆</span>對照</button>
   <button type="button" data-m="set" aria-pressed="false"><span aria-hidden="true">⚙</span>設定</button>
 </nav>
-<script src="data.js"></script>
-<script src="overrides.js" onerror="void 0"></script>
-<script src="script.js"></script>
+<script src="data.js?v=20261030-1"></script>
+<script src="overrides.js?v=20261030-1" onerror="void 0"></script>
+<script src="script.js?v=20261030-1"></script>
 </body>
 </html>
